@@ -1,1 +1,10 @@
-// TODO
+.logo {
+  background-color: var(--background);
+  display: flex;
+  padding-top: 5vh;
+  padding-left: 25vw;
+
+  h1 {
+    color: white;
+  }
+}
