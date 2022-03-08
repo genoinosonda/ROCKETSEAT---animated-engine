@@ -6,6 +6,8 @@ import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 import { FiUser, FiCalendar } from 'react-icons/fi';
 import { RichText } from 'prismic-dom';
+import Link from 'next/link';
+import Header from '../components/Header';
 
 interface Post {
   uid?: string;
@@ -29,29 +31,31 @@ interface HomeProps {
 export default function Home(props: PostPagination) {
   return (
     <>
+      <Header></Header>
+
       <div className={styles.principal}>
         <div className={styles.content}>
-          <div className={styles.logo}>
-            <img src="/logo.png" alt="logo" />
-          </div>
-
           {props.results.map(post => (
             <div className={styles.topic}>
-              <h2>{post.data.title}</h2>
-              <span>{post.data.subtitle}</span>
-              <ul>
-                <li>
-                  <p>
-                    <FiCalendar />
-                    {post.first_publication_date}
-                  </p>
-                </li>
-                <li>
-                  <p>
-                    <FiUser /> {post.data.author}
-                  </p>
-                </li>
-              </ul>
+              <Link href={`/post/${post.uid}`}>
+                <a key={post.uid}>
+                  <h2>{post.data.title}</h2>
+                  <span>{post.data.subtitle}</span>
+                  <ul>
+                    <li>
+                      <p>
+                        <FiCalendar />
+                        {post.first_publication_date}
+                      </p>
+                    </li>
+                    <li>
+                      <p>
+                        <FiUser /> {post.data.author}
+                      </p>
+                    </li>
+                  </ul>
+                </a>
+              </Link>
             </div>
           ))}
         </div>
@@ -89,22 +93,6 @@ export const getStaticProps = async () => {
       },
     };
   });
-
-  /*
-interface Post {
-  uid?: string;
-  first_publication_date: string | null;
-  data: {
-    title: string;
-    subtitle: string;
-    author: string;
-  };
-}
-
- next_page: string;
-  results: Post[];
-*/
-  //console.log(contentPost);
 
   return {
     props: { next_page, results: contentPost },
