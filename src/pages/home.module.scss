@@ -7,15 +7,13 @@
   .content {
     max-width: 1120px;
     padding-left: 25vw;
-    padding-top: 5vh;
-  }
-}
+    padding-top: 0.25vh;
 
-.logo {
-  h1 {
-    color: white;
+    a {
+      text-decoration: none;
+      cursor: pointer;
+    }
   }
-  margin-bottom: 3rem;
 }
 
 .topic {
