@@ -1,1 +1,48 @@
-// TODO
+.content {
+  background-color: var(--background);
+  padding-left: 25vw;
+  padding-right: 25vw;
+
+  .banner {
+    border: 1px solid green;
+    width: 100vw;
+
+    img {
+      border: 1px solid yellow;
+      width: 200px;
+    }
+  }
+
+  .headerOverview {
+    h1 {
+      color: var(--white);
+    }
+
+    ul {
+      display: flex;
+      list-style: none;
+      color: var(--second-text-color);
+      padding-top: 1rem;
+
+      li:nth-last-child(1),
+      li:nth-last-child(2) {
+        margin-left: 1rem;
+      }
+    }
+  }
+
+  .newsBody {
+    text-align: justify;
+
+    h2 {
+      color: var(--white);
+      padding-top: 2.25rem;
+      padding-bottom: 1.25rem;
+    }
+
+    p {
+      color: var(--second-text-color);
+      padding-top: 1.25rem;
+    }
+  }
+}
