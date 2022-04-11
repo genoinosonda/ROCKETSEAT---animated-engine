@@ -45,10 +45,12 @@ export default function Post(props: PostProps) {
           <h1>{props.post.data.title}</h1>
           <ul>
             <li>
-              <p>
-                <FiCalendar />
-                {props.post.first_publication_date}
-              </p>
+              <time>
+                <p>
+                  <FiCalendar />
+                  {props.post.first_publication_date}
+                </p>
+              </time>
             </li>
             <li>
               <p>
@@ -64,65 +66,22 @@ export default function Post(props: PostProps) {
           </ul>
         </div>
 
-        <div className={styles.newsBody}>
-          {props.post.data.content.map(contentBody => (
-            <>
-              <h2 key={contentBody.heading}>{contentBody.heading[0].text}</h2>
-              {contentBody.body.map(bodyPost =>(
-                <p>{bodyPost.text}</p>
-              ))}
-
-            </>
-          ))}
-        </div>
-
-        {/*
+        <body>
           <div className={styles.newsBody}>
-            <h2>Proin et varius</h2>
-            <p>
-              é simplesmente uma simulação de texto da indústria tipográfica e de
-              impressos, e vem sendo utilizado desde o século XVI, quando um
-              impressor desconhecido pegou uma bandeja de tipos e os embaralhou
-              para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não
-              só a cinco séculos, como também ao salto para a editoração
-              eletrônica, permanecendo essencialmente inalterado.
-            </p>
-            <p>
-              Se popularizou na década de 60, quando a Letraset lançou decalques
-              contendo passagens de Lorem Ipsum, e mais recentemente quando passou
-              a ser integrado a softwares de editoração eletrônica como Aldus
-              PageMaker.
-            </p>
-            <p>
-              É um fato conhecido de todos que um leitor se distrairá com o
-              conteúdo de texto legível de uma página quando estiver examinando
-              sua diagramação.
-            </p>
+            {props.post.data.content.map(contentBody => (
+              <>
+                <h2 key={contentBody.heading}>
+                  {RichText.asText(contentBody.heading)}
+                </h2>
+                {contentBody.body.map(bodyPost => (
+                  <div
+                    dangerouslySetInnerHTML={{ __html: bodyPost.text }}
+                  ></div>
+                ))}
+              </>
+            ))}
           </div>
-
-        <div className={styles.newsBody}>
-          <h2>Lorem ipsum</h2>
-          <p>
-            É um fato conhecido de todos que um leitor se distrairá com o
-            conteúdo de texto legível de uma página quando estiver examinando
-            sua diagramação.
-          </p>
-          <p>
-            Se popularizou na década de 60, quando a Letraset lançou decalques
-            contendo passagens de Lorem Ipsum, e mais recentemente quando passou
-            a ser integrado a softwares de editoração eletrônica como Aldus
-            PageMaker.
-          </p>
-          <p>
-            é simplesmente uma simulação de texto da indústria tipográfica e de
-            impressos, e vem sendo utilizado desde o século XVI, quando um
-            impressor desconhecido pegou uma bandeja de tipos e os embaralhou
-            para fazer um livro de modelos de tipos. Lorem Ipsum sobreviveu não
-            só a cinco séculos, como também ao salto para a editoração
-            eletrônica, permanecendo essencialmente inalterado.{' '}
-          </p>
-        </div>
-         */}
+        </body>
       </div>
     </>
   );
@@ -147,18 +106,25 @@ export const getStaticProps = async context => {
   const response = await prismic.getByUID('posts', String(uid), {});
 
   const post: Post = {
-    first_publication_date: response.first_publication_date,
+    first_publication_date: new Date(
+      response.first_publication_date
+    ).toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    }),
     data: {
-      title: response.data.title[0].text,
+      title: RichText.asText(response.data.title),
       banner: {
         url: response.data.banner.url,
       },
-      author: response.data.author[0].text,
+      author: RichText.asText(response.data.author),
       content: response.data.content,
     },
   };
 
   return {
     props: { post },
+    redirect: 60 * 30,
   };
 };
