@@ -38,7 +38,7 @@ export default function Post(props: PostProps) {
 
       <div className={styles.content}>
         <div className={styles.banner}>
-          <img src={props.post.data.banner.url} alt="" />
+          <img src={props.post.data.banner.url} alt={props.post.data.title} />
         </div>
 
         <div className={styles.headerOverview}>
@@ -73,11 +73,7 @@ export default function Post(props: PostProps) {
                 <h2 key={contentBody.heading}>
                   {RichText.asText(contentBody.heading)}
                 </h2>
-                {contentBody.body.map(bodyPost => (
-                  <div
-                    dangerouslySetInnerHTML={{ __html: bodyPost.text }}
-                  ></div>
-                ))}
+                <div dangerouslySetInnerHTML={{__html: RichText.asHtml(contentBody.body)}}></div>
               </>
             ))}
           </div>
